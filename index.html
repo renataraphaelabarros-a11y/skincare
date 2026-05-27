@@ -12,432 +12,139 @@
 <meta name="theme-color" content="#0d0a14">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0812;
-    --surface: #121020;
-    --card: #1a1730;
-    --card2: #201d38;
-    --border: #2a2545;
-    --text: #ede8ff;
-    --muted: #7a6d9a;
-    --faint: #3a3460;
-    --sal: #3dd9b8;
-    --man: #f06898;
-    --ret: #9d6ff0;
-    --pep: #7ab4ff;
-    --desc: #3a3460;
-    --gold: #c9a84c;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
-    padding-bottom: 80px;
-    overflow-x: hidden;
-  }
-
-  /* NAV TABS */
-  .tabs {
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    background: rgba(10,8,18,0.96);
-    backdrop-filter: blur(16px);
-    display: flex;
-    border-top: 1px solid var(--border);
-    z-index: 100;
-  }
-  .tab {
-    flex: 1;
-    padding: 12px 4px 16px;
-    text-align: center;
-    font-size: 0.65rem;
-    font-weight: 500;
-    color: var(--muted);
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: color 0.2s;
-  }
-  .tab .tab-icon { font-size: 1.3rem; display: block; margin-bottom: 3px; }
-  .tab.active { color: var(--ret); }
-
-  /* PAGES */
-  .page { display: none; padding: 0 0 20px; }
-  .page.active { display: block; }
-
-  /* HEADER */
-  .header {
-    padding: 48px 20px 24px;
-    background: linear-gradient(180deg, #160e2e 0%, var(--bg) 100%);
-    position: relative;
-    overflow: hidden;
-  }
-  .header::after {
-    content: '';
-    position: absolute;
-    top: -80px; right: -60px;
-    width: 220px; height: 220px;
-    background: radial-gradient(circle, rgba(157,111,240,0.12) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .header-top { display: flex; justify-content: space-between; align-items: flex-start; }
-  .header h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2rem;
-    font-weight: 600;
-    line-height: 1.1;
-  }
-  .header h1 em { font-style: italic; color: var(--ret); }
-  .header p { color: var(--muted); font-size: 0.8rem; margin-top: 4px; font-weight: 300; }
-  .moon-big { font-size: 2.2rem; margin-top: -4px; }
-
-  /* NEXT STEP CARD */
-  .next-card {
-    margin: 0 16px 16px;
-    border-radius: 20px;
-    padding: 22px 20px;
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s;
-    border: 1px solid transparent;
-  }
-  .next-card:active { transform: scale(0.98); }
-  .next-card.sal { background: linear-gradient(135deg, #0d2e2a, #0a1f1c); border-color: rgba(61,217,184,0.25); }
-  .next-card.man { background: linear-gradient(135deg, #2e0d1a, #1f0a12); border-color: rgba(240,104,152,0.25); }
-  .next-card.ret { background: linear-gradient(135deg, #1a0d2e, #120a1f); border-color: rgba(157,111,240,0.25); }
-  .next-card.pep { background: linear-gradient(135deg, #0d1a2e, #0a121f); border-color: rgba(122,180,255,0.25); }
-  .next-card.desc { background: linear-gradient(135deg, #141228, #0e0c1e); border-color: rgba(58,52,96,0.5); }
-
-  .next-label {
-    font-size: 0.65rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--muted);
-    margin-bottom: 10px;
-  }
-  .next-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.7rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .next-dot {
-    width: 16px; height: 16px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-  .next-sub { font-size: 0.78rem; color: var(--muted); margin-top: 6px; line-height: 1.5; }
-
-  .next-steps-mini {
-    margin-top: 14px;
-    padding-top: 14px;
-    border-top: 1px solid rgba(255,255,255,0.06);
-  }
-  .next-steps-mini li {
-    font-size: 0.75rem;
-    color: var(--muted);
-    padding: 3px 0;
-    list-style: none;
-    display: flex;
-    gap: 8px;
-  }
-  .step-n { color: var(--ret); font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; flex-shrink: 0; }
-
-  .btn-done {
-    margin-top: 16px;
-    width: 100%;
-    padding: 14px;
-    border-radius: 14px;
-    border: none;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.88rem;
-    font-weight: 600;
-    cursor: pointer;
-    letter-spacing: 0.5px;
-    transition: opacity 0.2s, transform 0.15s;
-  }
-  .btn-done:active { transform: scale(0.97); opacity: 0.85; }
-  .btn-done.sal { background: var(--sal); color: #0a1f1c; }
-  .btn-done.man { background: var(--man); color: #1f0a12; }
-  .btn-done.ret { background: var(--ret); color: #120a1f; }
-  .btn-done.pep { background: var(--pep); color: #0a121f; }
-  .btn-done.desc { background: var(--faint); color: var(--text); }
-
-  /* ANNOTATION */
-  .annotation-wrap {
-    margin: 0 16px 16px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
-  }
-  .annotation-wrap textarea {
-    width: 100%;
-    background: transparent;
-    border: none;
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
-    padding: 14px 16px;
-    resize: none;
-    outline: none;
-    min-height: 72px;
-    line-height: 1.6;
-  }
-  .annotation-wrap textarea::placeholder { color: var(--faint); }
-  .annotation-footer {
-    padding: 8px 16px 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .annotation-label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
-  .btn-save-note {
-    background: var(--card2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.72rem;
-    padding: 6px 14px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-weight: 500;
-  }
-
-  /* CYCLE PROGRESS */
-  .cycle-card {
-    margin: 0 16px 16px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 16px;
-  }
-  .cycle-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-  .cycle-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); font-weight: 600; }
-  .cycle-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.3rem;
-    color: var(--gold);
-    font-weight: 600;
-  }
-  .cycle-steps { display: flex; gap: 6px; flex-wrap: wrap; }
-  .cycle-step {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.6rem;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-    border: 2px solid var(--border);
-    color: var(--muted);
-    transition: all 0.3s;
-    text-transform: uppercase;
-  }
-  .cycle-step.done-sal { background: rgba(61,217,184,0.2); border-color: var(--sal); color: var(--sal); }
-  .cycle-step.done-man { background: rgba(240,104,152,0.2); border-color: var(--man); color: var(--man); }
-  .cycle-step.done-ret { background: rgba(157,111,240,0.2); border-color: var(--ret); color: var(--ret); }
-  .cycle-step.done-desc { background: rgba(58,52,96,0.4); border-color: var(--faint); color: var(--muted); }
-  .cycle-step.current { border-color: var(--gold); color: var(--gold); box-shadow: 0 0 8px rgba(201,168,76,0.3); }
-
-  .cycle-tip {
-    margin-top: 12px;
-    padding: 10px 12px;
-    background: rgba(201,168,76,0.06);
-    border-left: 3px solid var(--gold);
-    border-radius: 0 8px 8px 0;
-    font-size: 0.73rem;
-    color: var(--muted);
-    line-height: 1.5;
-  }
-  .cycle-tip strong { color: var(--gold); }
-
-  /* SECTION TITLE */
-  .sec-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 0.8rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-style: italic;
-    padding: 4px 16px 12px;
-  }
-
-  /* CALENDAR */
-  .cal-wrap { padding: 0 16px 16px; }
-  .cal-month-label {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.1rem;
-    color: var(--text);
-    margin-bottom: 10px;
-    font-weight: 600;
-  }
-  .cal-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 6px;
-    margin-bottom: 20px;
-  }
-  .cal-day-label {
-    text-align: center;
-    font-size: 0.58rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding-bottom: 4px;
-    font-weight: 600;
-  }
-  .cal-cell {
-    aspect-ratio: 1;
-    border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.65rem;
-    font-weight: 500;
-    color: var(--muted);
-    background: var(--card);
-    position: relative;
-  }
-  .cal-cell.empty { background: transparent; }
-  .cal-cell.today { border: 1px solid var(--ret); color: var(--ret); }
-  .cal-cell.has-entry { color: var(--text); }
-  .cal-cell .cal-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    margin-top: 2px;
-  }
-  .cal-cell .cal-dot.sal { background: var(--sal); box-shadow: 0 0 4px var(--sal); }
-  .cal-cell .cal-dot.man { background: var(--man); box-shadow: 0 0 4px var(--man); }
-  .cal-cell .cal-dot.ret { background: var(--ret); box-shadow: 0 0 4px var(--ret); }
-  .cal-cell .cal-dot.desc { background: var(--faint); }
-
-  /* HISTORY LIST */
-  .history-list { padding: 0 16px; }
-  .history-item {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 14px 16px;
-    margin-bottom: 10px;
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
-  }
-  .history-dot {
-    width: 14px; height: 14px;
-    border-radius: 50%;
-    margin-top: 3px;
-    flex-shrink: 0;
-  }
-  .history-dot.sal { background: var(--sal); box-shadow: 0 0 6px var(--sal); }
-  .history-dot.man { background: var(--man); box-shadow: 0 0 6px var(--man); }
-  .history-dot.ret { background: var(--ret); box-shadow: 0 0 6px var(--ret); }
-  .history-dot.desc { background: var(--faint); }
-  .history-info { flex: 1; }
-  .history-name { font-size: 0.85rem; font-weight: 600; }
-  .history-date { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
-  .history-note { font-size: 0.75rem; color: var(--muted); margin-top: 6px; font-style: italic; line-height: 1.5; border-top: 1px solid var(--border); padding-top: 6px; }
-  .empty-state { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 0.85rem; line-height: 1.8; }
-  .empty-state .e-icon { font-size: 2.5rem; display: block; margin-bottom: 10px; }
-
-  /* PHASE BADGE */
-  .phase-banner {
-    margin: 0 16px 16px;
-    background: linear-gradient(135deg, rgba(201,168,76,0.1), rgba(201,168,76,0.05));
-    border: 1px solid rgba(201,168,76,0.25);
-    border-radius: 16px;
-    padding: 16px;
-  }
-  .phase-title { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); font-weight: 600; margin-bottom: 6px; }
-  .phase-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
-  .phase-progress { margin-top: 12px; }
-  .phase-bar-bg { background: var(--border); border-radius: 99px; height: 6px; overflow: hidden; }
-  .phase-bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--gold), #e8c87a); transition: width 0.5s ease; }
-  .phase-bar-label { display: flex; justify-content: space-between; margin-top: 6px; font-size: 0.67rem; color: var(--muted); }
-
-  /* TOAST */
-  .toast {
-    position: fixed;
-    bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px);
-    background: var(--card2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 12px 20px;
-    font-size: 0.82rem;
-    color: var(--text);
-    opacity: 0;
-    transition: all 0.3s;
-    pointer-events: none;
-    z-index: 200;
-    white-space: nowrap;
-  }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-  /* REMINDER CARD */
-  .reminder-card {
-    margin: 0 16px 16px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .reminder-info strong { display: block; font-size: 0.85rem; }
-  .reminder-info span { font-size: 0.75rem; color: var(--muted); }
-  .btn-reminder {
-    background: var(--ret);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 8px 16px;
-    font-size: 0.78rem;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .btn-reminder.set { background: var(--card2); color: var(--muted); border: 1px solid var(--border); }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.6; }
-  }
-  .pulsing { animation: pulse 2s infinite; }
+:root{--bg:#0a0812;--surface:#121020;--card:#1a1730;--card2:#201d38;--border:#2a2545;--text:#ede8ff;--muted:#7a6d9a;--faint:#3a3460;--sal:#3dd9b8;--man:#f06898;--ret:#9d6ff0;--pep:#7ab4ff;--desc:#3a3460;--gold:#c9a84c}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;padding-bottom:80px;overflow-x:hidden}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.loading-screen{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:16px}
+.loading-screen .moon{font-size:3rem;animation:pulse 1.5s infinite}
+.loading-screen p{color:var(--muted);font-size:.85rem}
+.auth-screen{position:fixed;inset:0;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:998;padding:32px}
+.auth-screen .moon{font-size:3rem;margin-bottom:20px}
+.auth-screen h2{font-family:'Cormorant Garamond',serif;font-size:1.8rem;text-align:center;margin-bottom:8px}
+.auth-screen p{color:var(--muted);font-size:.82rem;text-align:center;line-height:1.7;margin-bottom:28px}
+.btn-google{background:white;color:#1f1f1f;border:none;border-radius:14px;padding:14px 24px;font-size:.9rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:10px;font-family:'DM Sans',sans-serif;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+.tabs{position:fixed;bottom:0;left:0;right:0;background:rgba(10,8,18,.96);backdrop-filter:blur(16px);display:flex;border-top:1px solid var(--border);z-index:100}
+.tab{flex:1;padding:12px 4px 16px;text-align:center;font-size:.65rem;font-weight:500;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:color .2s}
+.tab .tab-icon{font-size:1.3rem;display:block;margin-bottom:3px}
+.tab.active{color:var(--ret)}
+.page{display:none;padding:0 0 20px}
+.page.active{display:block}
+.header{padding:48px 20px 24px;background:linear-gradient(180deg,#160e2e 0%,var(--bg) 100%);position:relative;overflow:hidden}
+.header::after{content:'';position:absolute;top:-80px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,rgba(157,111,240,.12) 0%,transparent 70%);pointer-events:none}
+.header-top{display:flex;justify-content:space-between;align-items:flex-start}
+.header h1{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;line-height:1.1}
+.header h1 em{font-style:italic;color:var(--ret)}
+.header p{color:var(--muted);font-size:.8rem;margin-top:4px;font-weight:300}
+.moon-big{font-size:2.2rem;margin-top:-4px}
+.sync-bar{display:flex;align-items:center;gap:8px;padding:8px 16px;font-size:.7rem;color:var(--muted)}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:var(--sal)}
+.sync-dot.syncing{background:var(--gold);animation:pulse 1s infinite}
+.sync-dot.error{background:var(--man)}
+.next-card{margin:0 16px 16px;border-radius:20px;padding:22px 20px;border:1px solid transparent}
+.next-card.sal{background:linear-gradient(135deg,#0d2e2a,#0a1f1c);border-color:rgba(61,217,184,.25)}
+.next-card.man{background:linear-gradient(135deg,#2e0d1a,#1f0a12);border-color:rgba(240,104,152,.25)}
+.next-card.ret{background:linear-gradient(135deg,#1a0d2e,#120a1f);border-color:rgba(157,111,240,.25)}
+.next-card.desc{background:linear-gradient(135deg,#141228,#0e0c1e);border-color:rgba(58,52,96,.5)}
+.next-label{font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:10px}
+.next-title{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:600;display:flex;align-items:center;gap:10px}
+.next-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0}
+.next-sub{font-size:.78rem;color:var(--muted);margin-top:6px;line-height:1.5}
+.next-steps-mini{margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.06)}
+.next-steps-mini li{font-size:.75rem;color:var(--muted);padding:3px 0;list-style:none;display:flex;gap:8px}
+.step-n{color:var(--ret);font-family:'Cormorant Garamond',serif;font-size:.9rem;flex-shrink:0}
+.btn-done{margin-top:16px;width:100%;padding:14px;border-radius:14px;border:none;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;letter-spacing:.5px;transition:opacity .2s,transform .15s}
+.btn-done:active{transform:scale(.97);opacity:.85}
+.btn-done.sal{background:var(--sal);color:#0a1f1c}
+.btn-done.man{background:var(--man);color:#1f0a12}
+.btn-done.ret{background:var(--ret);color:#120a1f}
+.btn-done.desc{background:var(--faint);color:var(--text)}
+.btn-done:disabled{opacity:.5;cursor:not-allowed}
+.annotation-wrap{margin:0 16px 16px;background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.annotation-wrap textarea{width:100%;background:transparent;border:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.82rem;padding:14px 16px;resize:none;outline:none;min-height:72px;line-height:1.6}
+.annotation-wrap textarea::placeholder{color:var(--faint)}
+.annotation-footer{padding:8px 16px 12px;display:flex;justify-content:space-between;align-items:center}
+.annotation-label{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.btn-save-note{background:var(--card2);border:1px solid var(--border);color:var(--text);font-family:'DM Sans',sans-serif;font-size:.72rem;padding:6px 14px;border-radius:20px;cursor:pointer;font-weight:500}
+.cycle-card{margin:0 16px 16px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px}
+.cycle-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.cycle-title{font-size:.72rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-weight:600}
+.cycle-num{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--gold);font-weight:600}
+.cycle-steps{display:flex;gap:6px;flex-wrap:wrap}
+.cycle-step{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:600;letter-spacing:.3px;border:2px solid var(--border);color:var(--muted);transition:all .3s;text-transform:uppercase}
+.cycle-step.done-sal{background:rgba(61,217,184,.2);border-color:var(--sal);color:var(--sal)}
+.cycle-step.done-man{background:rgba(240,104,152,.2);border-color:var(--man);color:var(--man)}
+.cycle-step.done-ret{background:rgba(157,111,240,.2);border-color:var(--ret);color:var(--ret)}
+.cycle-step.done-desc{background:rgba(58,52,96,.4);border-color:var(--faint);color:var(--muted)}
+.cycle-step.current{border-color:var(--gold);color:var(--gold);box-shadow:0 0 8px rgba(201,168,76,.3)}
+.cycle-tip{margin-top:12px;padding:10px 12px;background:rgba(201,168,76,.06);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;font-size:.73rem;color:var(--muted);line-height:1.5}
+.cycle-tip strong{color:var(--gold)}
+.phase-banner{margin:0 16px 16px;background:linear-gradient(135deg,rgba(201,168,76,.1),rgba(201,168,76,.05));border:1px solid rgba(201,168,76,.25);border-radius:16px;padding:16px}
+.phase-title{font-size:.65rem;text-transform:uppercase;letter-spacing:2px;color:var(--gold);font-weight:600;margin-bottom:6px}
+.phase-desc{font-size:.78rem;color:var(--muted);line-height:1.6}
+.phase-bar-bg{background:var(--border);border-radius:99px;height:6px;overflow:hidden;margin-top:12px}
+.phase-bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),#e8c87a);transition:width .5s ease}
+.phase-bar-label{display:flex;justify-content:space-between;margin-top:6px;font-size:.67rem;color:var(--muted)}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:2px;font-style:italic;padding:4px 16px 12px}
+.cal-wrap{padding:0 16px 16px}
+.cal-month-label{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--text);margin-bottom:10px;font-weight:600}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:20px}
+.cal-day-label{text-align:center;font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;padding-bottom:4px;font-weight:600}
+.cal-cell{aspect-ratio:1;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.65rem;font-weight:500;color:var(--muted);background:var(--card)}
+.cal-cell.empty{background:transparent}
+.cal-cell.today{border:1px solid var(--ret);color:var(--ret)}
+.cal-cell.has-entry{color:var(--text)}
+.cal-cell .cal-dot{width:8px;height:8px;border-radius:50%;margin-top:2px}
+.cal-cell .cal-dot.sal{background:var(--sal);box-shadow:0 0 4px var(--sal)}
+.cal-cell .cal-dot.man{background:var(--man);box-shadow:0 0 4px var(--man)}
+.cal-cell .cal-dot.ret{background:var(--ret);box-shadow:0 0 4px var(--ret)}
+.cal-cell .cal-dot.desc{background:var(--faint)}
+.history-list{padding:0 16px}
+.history-item{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start}
+.history-dot{width:14px;height:14px;border-radius:50%;margin-top:3px;flex-shrink:0}
+.history-dot.sal{background:var(--sal);box-shadow:0 0 6px var(--sal)}
+.history-dot.man{background:var(--man);box-shadow:0 0 6px var(--man)}
+.history-dot.ret{background:var(--ret);box-shadow:0 0 6px var(--ret)}
+.history-dot.desc{background:var(--faint)}
+.history-dot.nota{background:var(--muted)}
+.history-info{flex:1}
+.history-name{font-size:.85rem;font-weight:600}
+.history-date{font-size:.72rem;color:var(--muted);margin-top:2px}
+.history-note{font-size:.75rem;color:var(--muted);margin-top:6px;font-style:italic;line-height:1.5;border-top:1px solid var(--border);padding-top:6px}
+.empty-state{text-align:center;padding:40px 20px;color:var(--muted);font-size:.85rem;line-height:1.8}
+.empty-state .e-icon{font-size:2.5rem;display:block;margin-bottom:10px}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:12px 20px;font-size:.82rem;color:var(--text);opacity:0;transition:all .3s;pointer-events:none;z-index:200;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
 
-<!-- TOAST -->
+<div class="loading-screen" id="loading">
+  <span class="moon">🌙</span>
+  <p id="loading-msg">Carregando seus dados...</p>
+</div>
+
+<div class="auth-screen" id="auth-screen">
+  <span class="moon">🌙</span>
+  <h2>Skincare<br><em style="font-family:'Cormorant Garamond',serif;font-style:italic;color:#9d6ff0">Noturno</em></h2>
+  <p>Conecte sua conta Google para salvar seu histórico com segurança — em qualquer celular, para sempre.</p>
+  <button class="btn-google" onclick="startAuth()">
+    <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.36-8.16 2.36-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+    Entrar com Google
+  </button>
+</div>
+
 <div class="toast" id="toast"></div>
 
-<!-- PAGE: HOJE -->
 <div class="page active" id="page-hoje">
   <div class="header">
     <div class="header-top">
-      <div>
-        <h1>Skincare<br><em>Noturno</em></h1>
-        <p id="header-date">carregando...</p>
-      </div>
+      <div><h1>Skincare<br><em>Noturno</em></h1><p id="header-date"></p></div>
       <span class="moon-big">🌙</span>
     </div>
   </div>
-
-  <!-- Próximo passo -->
+  <div class="sync-bar"><div class="sync-dot" id="sync-dot"></div><span id="sync-label">sincronizando...</span></div>
   <div id="next-card-wrap"></div>
-
-  <!-- Anotação -->
   <div class="annotation-wrap">
     <textarea id="note-input" placeholder="Como está sua pele hoje? Alguma reação? Anotações livres..." rows="3"></textarea>
     <div class="annotation-footer">
@@ -445,309 +152,222 @@
       <button class="btn-save-note" onclick="saveNote()">salvar nota</button>
     </div>
   </div>
-
-  <!-- Ciclo atual -->
   <div id="cycle-card-wrap"></div>
-
-  <!-- Fase -->
   <div id="phase-banner-wrap"></div>
-
-  <!-- Lembrete -->
-  <div class="reminder-card">
-    <div class="reminder-info">
-      <strong>⏰ Lembrete noturno</strong>
-      <span>Todo dia às 21h30</span>
-    </div>
-    <button class="btn-reminder" id="btn-reminder" onclick="setReminder()">Ativar</button>
-  </div>
 </div>
 
-<!-- PAGE: HISTÓRICO -->
 <div class="page" id="page-historico">
   <div class="header">
     <div class="header-top">
-      <div>
-        <h1>Meu<br><em>Histórico</em></h1>
-        <p id="hist-count">carregando...</p>
-      </div>
+      <div><h1>Meu<br><em>Histórico</em></h1><p id="hist-count"></p></div>
       <span class="moon-big">📋</span>
     </div>
   </div>
-
   <div class="sec-title">— Calendário</div>
   <div class="cal-wrap" id="cal-wrap"></div>
-
   <div class="sec-title">— Registros</div>
   <div class="history-list" id="history-list"></div>
 </div>
 
-<!-- TABS -->
 <nav class="tabs">
-  <div class="tab active" onclick="showPage('hoje', this)">
-    <span class="tab-icon">🌙</span>Hoje
-  </div>
-  <div class="tab" onclick="showPage('historico', this)">
-    <span class="tab-icon">📋</span>Histórico
-  </div>
+  <div class="tab active" onclick="showPage('hoje',this)"><span class="tab-icon">🌙</span>Hoje</div>
+  <div class="tab" onclick="showPage('historico',this)"><span class="tab-icon">📋</span>Histórico</div>
 </nav>
 
 <script>
-// ========== DATA ==========
-const SEQUENCE = [
-  { key: 'sal', name: 'Salicílico 2%', short: 'SAL', color: '#3dd9b8', desc: 'Controle de poros e oleosidade', steps: ['Limpe o rosto e seque bem.', 'Passe a solução com algodão em todo o rosto (evite olhos).', 'Espere ~1 min e aplique o Peptide Cream.'] },
-  { key: 'man', name: 'Mandélico 7% AHA', short: 'MAN', color: '#f06898', desc: 'Renovação suave e uniformização', steps: ['Limpe o rosto e seque bem.', 'Aplique fina camada do Gel 7% AHA.', 'Aguarde ~2 min e finalize com o Peptide Cream.'] },
-  { key: 'desc', name: 'Descanso', short: 'DESC', color: '#3a3460', desc: 'A pele se recupera e se adapta', steps: ['Limpe o rosto suavemente.', 'Aplique generosamente o Peptide Cream.'] },
-  { key: 'man', name: 'Mandélico 7% AHA', short: 'MAN', color: '#f06898', desc: 'Renovação suave e uniformização', steps: ['Limpe o rosto e seque bem.', 'Aplique fina camada do Gel 7% AHA.', 'Aguarde ~2 min e finalize com o Peptide Cream.'] },
-  { key: 'ret', name: 'Retinol 0,3%', short: 'RET', color: '#9d6ff0', desc: 'Anti-idade, textura e firmeza', steps: ['Limpe o rosto e seque MUITO bem.', 'Aplique camada bem fina do Retinol 0,3%.', 'Finalize com o Peptide Cream. (Técnica sanduíche se necessário)'] },
-  { key: 'desc', name: 'Descanso', short: 'DESC', color: '#3a3460', desc: 'A pele se recupera e se adapta', steps: ['Limpe o rosto suavemente.', 'Aplique generosamente o Peptide Cream.'] },
+const SHEET_ID='179LRZErTlE-MTP5Shf7KoRr_06ujZXbm-QeWWKCVih0';
+const REDIRECT=window.location.href.split('?')[0].split('#')[0];
+const SEQUENCE=[
+  {key:'sal',name:'Salicílico 2%',short:'SAL',color:'#3dd9b8',desc:'Controle de poros e oleosidade',steps:['Limpe o rosto e seque bem.','Passe a solução com algodão em todo o rosto (evite olhos).','Espere ~1 min e aplique o Peptide Cream.']},
+  {key:'man',name:'Mandélico 7% AHA',short:'MAN',color:'#f06898',desc:'Renovação suave e uniformização',steps:['Limpe o rosto e seque bem.','Aplique fina camada do Gel 7% AHA.','Aguarde ~2 min e finalize com o Peptide Cream.']},
+  {key:'desc',name:'Descanso',short:'DESC',color:'#3a3460',desc:'A pele se recupera e se adapta',steps:['Limpe o rosto suavemente.','Aplique generosamente o Peptide Cream.']},
+  {key:'man',name:'Mandélico 7% AHA',short:'MAN',color:'#f06898',desc:'Renovação suave e uniformização',steps:['Limpe o rosto e seque bem.','Aplique fina camada do Gel 7% AHA.','Aguarde ~2 min e finalize com o Peptide Cream.']},
+  {key:'ret',name:'Retinol 0,3%',short:'RET',color:'#9d6ff0',desc:'Anti-idade, textura e firmeza',steps:['Limpe o rosto e seque MUITO bem.','Aplique camada bem fina do Retinol 0,3%.','Finalize com o Peptide Cream. (Técnica sanduíche se necessário)']},
+  {key:'desc',name:'Descanso',short:'DESC',color:'#3a3460',desc:'A pele se recupera e se adapta',steps:['Limpe o rosto suavemente.','Aplique generosamente o Peptide Cream.']},
 ];
+const TARGET_APPS=32;
 
-// CYCLES_TO_PHASE2 = quantos ciclos completos pra indicar Fase 2
-const CYCLES_TO_PHASE2 = 8;
+let state={entries:[],currentStep:0};
+let token=null;
+let saving=false;
 
-function loadData() {
-  return JSON.parse(localStorage.getItem('skincare_data') || '{"entries":[],"currentStep":0,"completedCycles":0,"reminderSet":false}');
+// --- AUTH ---
+function startAuth(){
+  const p=new URLSearchParams({client_id:'660557699793-2qvbt6k4l5l5r5q9m2h3j7k9n6p8e1oa.apps.googleusercontent.com',redirect_uri:REDIRECT,response_type:'token',scope:'https://www.googleapis.com/auth/spreadsheets',prompt:'select_account'});
+  location.href='https://accounts.google.com/o/oauth2/v2/auth?'+p;
 }
-function saveData(d) { localStorage.setItem('skincare_data', JSON.stringify(d)); }
-
-// ========== UTILS ==========
-function today() {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-}
-function formatDate(iso) {
-  const [y,m,d] = iso.split('-');
-  const months = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
-  const days = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-  const dt = new Date(y, m-1, d);
-  return `${days[dt.getDay()]}, ${d} ${months[m-1]} ${y}`;
-}
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+function getToken(){
+  // from hash
+  const h=location.hash;
+  if(h&&h.includes('access_token')){
+    const p=new URLSearchParams(h.slice(1));
+    const t=p.get('access_token');
+    if(t){localStorage.setItem('sk_token',JSON.stringify({t,exp:Date.now()+3500000}));history.replaceState({},'',location.pathname);return t;}
+  }
+  // from storage
+  try{const s=JSON.parse(localStorage.getItem('sk_token')||'{}');if(s.t&&Date.now()<s.exp)return s.t;}catch(e){}
+  return null;
 }
 
-// ========== RENDER HOJE ==========
-function renderHoje() {
-  const d = loadData();
-  const step = SEQUENCE[d.currentStep % SEQUENCE.length];
-  const cyclePos = d.currentStep % SEQUENCE.length;
-
-  // Date
-  const now = new Date();
-  const days = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
-  const months = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
-  document.getElementById('header-date').textContent = `${days[now.getDay()]}, ${now.getDate()} de ${months[now.getMonth()]}`;
-
-  // Reminder btn
-  document.getElementById('btn-reminder').className = 'btn-reminder' + (d.reminderSet ? ' set' : '');
-  document.getElementById('btn-reminder').textContent = d.reminderSet ? '✓ Ativo' : 'Ativar';
-
-  // Next card
-  document.getElementById('next-card-wrap').innerHTML = `
-    <div class="next-card ${step.key}" style="margin:0 16px 16px;">
-      <div class="next-label">próxima aplicação</div>
-      <div class="next-title">
-        <span class="next-dot" style="background:${step.color};box-shadow:0 0 8px ${step.color}"></span>
-        ${step.name}
-      </div>
-      <div class="next-sub">✦ ${step.desc} &nbsp;·&nbsp; + Peptide Cream ao final</div>
-      <ul class="next-steps-mini">
-        ${step.steps.map((s,i) => `<li><span class="step-n">${i+1}.</span>${s}</li>`).join('')}
-      </ul>
-      <button class="btn-done ${step.key}" onclick="markDone()">✓ Fiz hoje!</button>
-    </div>`;
-
-  // Cycle card
-  const cycleSteps = SEQUENCE.map((s, i) => {
-    let cls = '';
-    if (i < cyclePos) cls = `done-${s.key}`;
-    else if (i === cyclePos) cls = 'current';
-    return `<div class="cycle-step ${cls}">${s.short}</div>`;
-  }).join('');
-
-  const completedRounds = Math.floor(d.currentStep / SEQUENCE.length);
-  document.getElementById('cycle-card-wrap').innerHTML = `
-    <div class="cycle-card">
-      <div class="cycle-top">
-        <span class="cycle-title">Ciclo atual</span>
-        <span class="cycle-num">Rodada ${completedRounds + 1}</span>
-      </div>
-      <div class="cycle-steps">${cycleSteps}</div>
-      <div class="cycle-tip"><strong>Passo ${cyclePos+1} de ${SEQUENCE.length}:</strong> ${step.name}. Complete o ciclo sem irritação para avançar de fase.</div>
-    </div>`;
-
-  // Phase banner
-  const totalApps = d.entries ? d.entries.filter(e => e.step !== 'desc').length : 0;
-  const targetApps = CYCLES_TO_PHASE2 * 4; // 4 aplicações ativas por ciclo (sal+man+man+ret)
-  const pct = Math.min(100, Math.round((totalApps / targetApps) * 100));
-  const fase2ready = pct >= 100;
-
-  document.getElementById('phase-banner-wrap').innerHTML = `
-    <div class="phase-banner">
-      <div class="phase-title">${fase2ready ? '🌟 Fase 2 liberada!' : '✦ Progresso para Fase 2'}</div>
-      <div class="phase-desc">${fase2ready
-        ? 'Parabéns! Você completou aplicações suficientes. Pode introduzir o <strong>Creme 10% AHA</strong> e depois o <strong>Glicointense Peel</strong> gradualmente.'
-        : `Faltam <strong>${targetApps - totalApps} aplicações ativas</strong> (SAL, MAN ou RET) para você estar pronta para introduzir o Creme 10% AHA e o Glicointense Peel.`}
-      </div>
-      <div class="phase-progress">
-        <div class="phase-bar-bg"><div class="phase-bar-fill" style="width:${pct}%"></div></div>
-        <div class="phase-bar-label"><span>${totalApps} aplicações feitas</span><span>${targetApps} meta</span></div>
-      </div>
-    </div>`;
+// --- SHEETS ---
+async function shGet(range){
+  const r=await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(range)}`,{headers:{Authorization:'Bearer '+token}});
+  if(r.status===401){token=null;localStorage.removeItem('sk_token');showAuth();return null;}
+  return r.json();
+}
+async function shPut(range,values){
+  return fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(range)}?valueInputOption=RAW`,{method:'PUT',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({values})});
+}
+async function shAppend(values){
+  return fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/Dados!A:E:append?valueInputOption=RAW`,{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({values})});
 }
 
-// ========== MARK DONE ==========
-function markDone() {
-  const d = loadData();
-  const step = SEQUENCE[d.currentStep % SEQUENCE.length];
-  const t = today();
+// --- LOAD ---
+async function loadCloud(){
+  setSyncing(true);
+  try{
+    const st=await shGet('Estado!A1:B1');
+    if(st&&st.values&&st.values[0]){state.currentStep=parseInt(st.values[0][0])||0;}
+    const en=await shGet('Dados!A:E');
+    if(en&&en.values&&en.values.length>1){
+      state.entries=en.values.slice(1).map(r=>({date:r[0]||'',step:r[1]||'',name:r[2]||'',stepIndex:parseInt(r[3])||0,note:r[4]||''})).reverse();
+    }else{
+      state.entries=[];
+      await shPut('Dados!A1:E1',[['Data','Produto','Nome','StepIndex','Anotação']]);
+      await shPut('Estado!A1:B1',[[0,0]]);
+    }
+    saveCache();
+    setSyncing(false,'sincronizado com Google Drive ✓');
+  }catch(e){setSyncing(false,'erro ao sincronizar','error');loadCache();}
+}
 
-  // Check if already done today with same step
-  const alreadyToday = d.entries && d.entries.find(e => e.date === t && e.step === step.key && e.stepIndex === d.currentStep);
-  if (alreadyToday) { showToast('Você já marcou esse passo hoje! 😊'); return; }
+// --- CACHE ---
+function saveCache(){localStorage.setItem('sk_cache',JSON.stringify(state));}
+function loadCache(){try{const c=JSON.parse(localStorage.getItem('sk_cache')||'{}');if(c.entries){state=c;return true;}}catch(e){}return false;}
 
-  const note = document.getElementById('note-input').value.trim();
-  if (!d.entries) d.entries = [];
-  d.entries.unshift({ date: t, step: step.key, name: step.name, stepIndex: d.currentStep, note });
-  d.currentStep++;
-  if (d.currentStep % SEQUENCE.length === 0) d.completedCycles = (d.completedCycles || 0) + 1;
-  saveData(d);
-  document.getElementById('note-input').value = '';
-  showToast('✓ Marcado! Boa pele 🌙');
+// --- UTILS ---
+function today(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function fmtDate(iso){if(!iso)return'';const[y,m,d]=iso.split('-');const mn=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];const dn=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];const dt=new Date(y,m-1,d);return`${dn[dt.getDay()]}, ${d} ${mn[m-1]} ${y}`;}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+function showAuth(){document.getElementById('loading').style.display='none';document.getElementById('auth-screen').style.display='flex';}
+function setSyncing(on,label,err){const d=document.getElementById('sync-dot');const l=document.getElementById('sync-label');if(!d)return;d.className='sync-dot'+(on?' syncing':err?' error':'');if(l&&label)l.textContent=label;}
+
+// --- RENDER HOJE ---
+function renderHoje(){
+  const step=SEQUENCE[state.currentStep%SEQUENCE.length];
+  const pos=state.currentStep%SEQUENCE.length;
+  const now=new Date();
+  const dn=['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+  const mn=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  const hd=document.getElementById('header-date');
+  if(hd)hd.textContent=`${dn[now.getDay()]}, ${now.getDate()} de ${mn[now.getMonth()]}`;
+
+  const ncw=document.getElementById('next-card-wrap');
+  if(ncw)ncw.innerHTML=`<div class="next-card ${step.key}">
+    <div class="next-label">próxima aplicação</div>
+    <div class="next-title"><span class="next-dot" style="background:${step.color};box-shadow:0 0 8px ${step.color}"></span>${step.name}</div>
+    <div class="next-sub">✦ ${step.desc} · + Peptide Cream ao final</div>
+    <ul class="next-steps-mini">${step.steps.map((s,i)=>`<li><span class="step-n">${i+1}.</span>${s}</li>`).join('')}</ul>
+    <button class="btn-done ${step.key}" id="btn-main" onclick="markDone()">✓ Fiz hoje!</button>
+  </div>`;
+
+  const rounds=Math.floor(state.currentStep/SEQUENCE.length);
+  const cycleHTML=SEQUENCE.map((s,i)=>{let c=i<pos?`done-${s.key}`:i===pos?'current':'';return`<div class="cycle-step ${c}">${s.short}</div>`;}).join('');
+  const ccw=document.getElementById('cycle-card-wrap');
+  if(ccw)ccw.innerHTML=`<div class="cycle-card">
+    <div class="cycle-top"><span class="cycle-title">Ciclo atual</span><span class="cycle-num">Rodada ${rounds+1}</span></div>
+    <div class="cycle-steps">${cycleHTML}</div>
+    <div class="cycle-tip"><strong>Passo ${pos+1} de ${SEQUENCE.length}:</strong> ${step.name}.</div>
+  </div>`;
+
+  const apps=state.entries.filter(e=>e.step!=='desc'&&e.step!=='nota').length;
+  const pct=Math.min(100,Math.round(apps/TARGET_APPS*100));
+  const f2=pct>=100;
+  const pbw=document.getElementById('phase-banner-wrap');
+  if(pbw)pbw.innerHTML=`<div class="phase-banner">
+    <div class="phase-title">${f2?'🌟 Fase 2 liberada!':'✦ Progresso para Fase 2'}</div>
+    <div class="phase-desc">${f2?'Parabéns! Pode introduzir o <strong>Creme 10% AHA</strong> e depois o <strong>Glicointense Peel</strong> gradualmente.':`Faltam <strong>${TARGET_APPS-apps} aplicações ativas</strong> para introduzir os próximos produtos.`}</div>
+    <div class="phase-bar-bg"><div class="phase-bar-fill" style="width:${pct}%"></div></div>
+    <div class="phase-bar-label"><span>${apps} feitas</span><span>${TARGET_APPS} meta</span></div>
+  </div>`;
+}
+
+// --- MARK DONE ---
+async function markDone(){
+  if(saving)return;
+  const btn=document.getElementById('btn-main');
+  if(btn){btn.disabled=true;btn.textContent='Salvando...';}
+  saving=true;
+  const step=SEQUENCE[state.currentStep%SEQUENCE.length];
+  const note=document.getElementById('note-input').value.trim();
+  const entry={date:today(),step:step.key,name:step.name,stepIndex:state.currentStep,note};
+  state.entries.unshift(entry);
+  state.currentStep++;
+  saveCache();
+  renderHoje();
+  await shAppend([[entry.date,entry.step,entry.name,entry.stepIndex,entry.note]]);
+  await shPut('Estado!A1:B1',[[state.currentStep,0]]);
+  setSyncing(false,'salvo no Google Drive ✓');
+  document.getElementById('note-input').value='';
+  toast('✓ Marcado e salvo! Boa pele 🌙');
+  saving=false;
+}
+
+// --- SAVE NOTE ---
+async function saveNote(){
+  const note=document.getElementById('note-input').value.trim();
+  if(!note){toast('Escreva algo primeiro 😊');return;}
+  const entry={date:today(),step:'nota',name:'Anotação',stepIndex:state.currentStep,note};
+  state.entries.unshift(entry);
+  saveCache();
+  await shAppend([[entry.date,entry.step,entry.name,entry.stepIndex,entry.note]]);
+  document.getElementById('note-input').value='';
+  toast('Nota salva! 📝');
+}
+
+// --- RENDER HISTÓRICO ---
+function renderHistorico(){
+  const entries=state.entries||[];
+  const active=entries.filter(e=>e.step!=='nota');
+  const hc=document.getElementById('hist-count');
+  if(hc)hc.textContent=`${active.length} aplicações registradas`;
+  const now=new Date();const yr=now.getFullYear();const mo=now.getMonth();
+  const mnames=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  const dnames=['D','S','T','Q','Q','S','S'];
+  const emap={};entries.forEach(e=>{if(!emap[e.date])emap[e.date]=e.step;});
+  const fd=new Date(yr,mo,1).getDay();const dim=new Date(yr,mo+1,0).getDate();const ts=today();
+  let cal=`<div class="cal-month-label">${mnames[mo]} ${yr}</div><div class="cal-grid">`;
+  dnames.forEach(d=>cal+=`<div class="cal-day-label">${d}</div>`);
+  for(let i=0;i<fd;i++)cal+=`<div class="cal-cell empty"></div>`;
+  for(let d=1;d<=dim;d++){const ds=`${yr}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;const es=emap[ds];const dot=es&&es!=='nota'?`<span class="cal-dot ${es}"></span>`:'';cal+=`<div class="cal-cell ${ds===ts?'today':''} ${es?'has-entry':''}">${d}${dot}</div>`;}
+  cal+='</div>';
+  const cw=document.getElementById('cal-wrap');if(cw)cw.innerHTML=cal;
+  const cols={sal:'#3dd9b8',man:'#f06898',ret:'#9d6ff0',desc:'#3a3460',nota:'#7a6d9a'};
+  const hl=document.getElementById('history-list');if(!hl)return;
+  if(!entries.length){hl.innerHTML=`<div class="empty-state"><span class="e-icon">🌱</span>Nenhum registro ainda.<br>Marque sua primeira aplicação!</div>`;return;}
+  hl.innerHTML=entries.map(e=>`<div class="history-item"><div class="history-dot ${e.step}" style="background:${cols[e.step]||'#3a3460'}"></div><div class="history-info"><div class="history-name">${e.name}</div><div class="history-date">${fmtDate(e.date)}</div>${e.note?`<div class="history-note">"${e.note}"</div>`:''}</div></div>`).join('');
+}
+
+// --- NAV ---
+function showPage(name,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  el.classList.add('active');
+  if(name==='historico')renderHistorico();
+}
+
+// --- INIT ---
+async function init(){
+  token=getToken();
+  if(!token){showAuth();return;}
+  loadCache();
+  if(state.entries||state.currentStep){renderHoje();}
+  document.getElementById('loading').style.display='none';
+  await loadCloud();
   renderHoje();
 }
-
-// ========== SAVE NOTE ==========
-function saveNote() {
-  const d = loadData();
-  const note = document.getElementById('note-input').value.trim();
-  if (!note) { showToast('Escreva algo primeiro 😊'); return; }
-  if (!d.entries) d.entries = [];
-  const t = today();
-  // Add as standalone note if no entry today yet
-  d.entries.unshift({ date: t, step: 'nota', name: 'Anotação', note });
-  saveData(d);
-  document.getElementById('note-input').value = '';
-  showToast('Nota salva! 📝');
-}
-
-// ========== REMINDER ==========
-function setReminder() {
-  const d = loadData();
-  if (d.reminderSet) { showToast('Lembrete já ativo! ⏰'); return; }
-  if ('Notification' in window) {
-    Notification.requestPermission().then(perm => {
-      if (perm === 'granted') {
-        d.reminderSet = true;
-        saveData(d);
-        scheduleReminder();
-        renderHoje();
-        showToast('Lembrete ativado para 21h30! ⏰');
-      } else {
-        showToast('Permissão negada. Ative nas configurações.');
-      }
-    });
-  } else {
-    // Fallback: just mark as set and show info
-    d.reminderSet = true;
-    saveData(d);
-    renderHoje();
-    showToast('Configure o alarme às 21h30 no seu celular 😊');
-  }
-}
-
-function scheduleReminder() {
-  if (!('Notification' in window) || Notification.permission !== 'granted') return;
-  const now = new Date();
-  const target = new Date();
-  target.setHours(21, 30, 0, 0);
-  if (target <= now) target.setDate(target.getDate() + 1);
-  const delay = target - now;
-  setTimeout(() => {
-    new Notification('🌙 Skincare Noturno', { body: 'Hora da sua rotina! Qual o próximo passo?', icon: '' });
-    scheduleReminder(); // reschedule for next day
-  }, delay);
-}
-
-// ========== RENDER HISTÓRICO ==========
-function renderHistorico() {
-  const d = loadData();
-  const entries = d.entries || [];
-
-  // Count
-  const activeEntries = entries.filter(e => e.step !== 'nota');
-  document.getElementById('hist-count').textContent = `${activeEntries.length} aplicações registradas`;
-
-  // Calendar - current month
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth();
-  const months = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-  const days = ['D','S','T','Q','Q','S','S'];
-
-  // Build entry map
-  const entryMap = {};
-  entries.forEach(e => {
-    if (!entryMap[e.date]) entryMap[e.date] = e.step;
-  });
-
-  const firstDay = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month+1, 0).getDate();
-  const todayStr = today();
-
-  let calHTML = `<div class="cal-month-label">${months[month]} ${year}</div>`;
-  calHTML += `<div class="cal-grid">`;
-  days.forEach(d => calHTML += `<div class="cal-day-label">${d}</div>`);
-
-  for (let i = 0; i < firstDay; i++) calHTML += `<div class="cal-cell empty"></div>`;
-  for (let day = 1; day <= daysInMonth; day++) {
-    const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-    const entryStep = entryMap[dateStr];
-    const isToday = dateStr === todayStr;
-    let dotHTML = '';
-    if (entryStep && entryStep !== 'nota') dotHTML = `<span class="cal-dot ${entryStep}"></span>`;
-    calHTML += `<div class="cal-cell ${isToday?'today':''} ${entryStep?'has-entry':''}">${day}${dotHTML}</div>`;
-  }
-  calHTML += `</div>`;
-  document.getElementById('cal-wrap').innerHTML = calHTML;
-
-  // History list
-  if (entries.length === 0) {
-    document.getElementById('history-list').innerHTML = `<div class="empty-state"><span class="e-icon">🌱</span>Nenhum registro ainda.<br>Volte à aba Hoje e marque sua primeira aplicação!</div>`;
-    return;
-  }
-
-  const stepColors = { sal: '#3dd9b8', man: '#f06898', ret: '#9d6ff0', desc: '#3a3460', nota: '#7a6d9a' };
-  let listHTML = '';
-  entries.forEach(e => {
-    listHTML += `
-      <div class="history-item">
-        <div class="history-dot ${e.step}" style="background:${stepColors[e.step]||'#3a3460'}"></div>
-        <div class="history-info">
-          <div class="history-name">${e.name}</div>
-          <div class="history-date">${formatDate(e.date)}</div>
-          ${e.note ? `<div class="history-note">"${e.note}"</div>` : ''}
-        </div>
-      </div>`;
-  });
-  document.getElementById('history-list').innerHTML = listHTML;
-}
-
-// ========== NAVIGATION ==========
-function showPage(name, el) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  el.classList.add('active');
-  if (name === 'historico') renderHistorico();
-}
-
-// ========== INIT ==========
-renderHoje();
-if ('Notification' in window && Notification.permission === 'granted') scheduleReminder();
+init();
 </script>
 </body>
 </html>
